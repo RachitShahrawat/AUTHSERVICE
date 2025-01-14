@@ -2,9 +2,15 @@ const express=require('express');
 
 const UserController=require('../../controllers/user-controller');
 
+const {AuthrequestValidators}=require('../../middleware/index');
+
 const router=express.Router();
 
-router.post('/signup',UserController.create);
-router.post('/signin',UserController.signIn);
+router.post('/signup',
+    AuthrequestValidators.validateUserAuth,
+    UserController.create);
+router.post('/signin',
+    AuthrequestValidators.validateUserAuth,
+    UserController.signIn);
 
 module.exports=router;
