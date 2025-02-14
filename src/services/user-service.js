@@ -24,6 +24,7 @@ class UserService {
     }
 
     async signIn(email,plainPassword){
+        try{
         // step 1> fetch the user using the email
         const user=await this.userRepository.getByEmail(email);
         // step 2>compare incoming plain password with store encrypted password
@@ -36,6 +37,13 @@ class UserService {
         const newJWT=this.createToken({email:user.email,id:user.id});
         return newJWT;
     }
+    catch(error){
+        if(error.name=='AttributeNotFound'){
+            throw error;
+        }
+        console.log("Something went wrong in the sign process")
+    }
+ }
 
     async isAuthenticated(token){
         try{

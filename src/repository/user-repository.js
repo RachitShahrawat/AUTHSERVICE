@@ -1,4 +1,5 @@
 const {User,Role}=require('../models/index');
+const{StatusCodes}=require('http-status-codes');
 
 class UserRepository{
    
@@ -50,6 +51,14 @@ class UserRepository{
               email:userEmail
              }
             });
+            if(!user){
+                throw new ClientError(
+                    'AttributeNotFound',
+                    'Invalid email sent in request',
+                    'Please check the email,as there is no record of the email',
+                    StatusCodes.NOT_FOUND
+                );
+            }
             return user;
         }
         catch(error){
